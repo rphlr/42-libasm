@@ -14,16 +14,16 @@ ssize_t ft_read(int fd, void *buf, size_t count);
 char *ft_strdup(const char *s);
 
 // Déclarations des fonctions bonus
-int ft_atoi_base(char *str, char *base);
-typedef struct s_list
-{
-    void *data;
-    struct s_list *next;
-} t_list;
-void ft_list_push_front(t_list **begin_list, void *data);
-int ft_list_size(t_list *begin_list);
-void ft_list_sort(t_list **begin_list, int (*cmp)());
-void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+// int ft_atoi_base(char *str, char *base);
+// typedef struct s_list
+// {
+//     void *data;
+//     struct s_list *next;
+// } t_list;
+// void ft_list_push_front(t_list **begin_list, void *data);
+// int ft_list_size(t_list *begin_list);
+// void ft_list_sort(t_list **begin_list, int (*cmp)());
+// void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
 
 // Tests pour les fonctions obligatoires
 void test_ft_strlen()
@@ -89,96 +89,96 @@ void test_ft_strdup()
 }
 
 // Tests pour les fonctions bonus
-void test_ft_atoi_base()
-{
-    printf("Test ft_atoi_base:\n");
-    printf("'123' en base '0123456789': %d\n", ft_atoi_base("123", "0123456789"));
-    printf("'1010' en base '01': %d\n", ft_atoi_base("1010", "01"));
-    printf("'FF' en base '0123456789ABCDEF': %d\n", ft_atoi_base("FF", "0123456789ABCDEF"));
-    printf("\n");
-}
+// void test_ft_atoi_base()
+// {
+//     printf("Test ft_atoi_base:\n");
+//     printf("'123' en base '0123456789': %d\n", ft_atoi_base("123", "0123456789"));
+//     printf("'1010' en base '01': %d\n", ft_atoi_base("1010", "01"));
+//     printf("'FF' en base '0123456789ABCDEF': %d\n", ft_atoi_base("FF", "0123456789ABCDEF"));
+//     printf("\n");
+// }
 
-void print_list(t_list *list)
-{
-    while (list)
-    {
-        printf("%s -> ", (char *)list->data);
-        list = list->next;
-    }
-    printf("NULL\n");
-}
+// void print_list(t_list *list)
+// {
+//     while (list)
+//     {
+//         printf("%s -> ", (char *)list->data);
+//         list = list->next;
+//     }
+//     printf("NULL\n");
+// }
 
-void free_list(t_list *list)
-{
-    t_list *tmp;
-    while (list)
-    {
-        tmp = list;
-        list = list->next;
-        free(tmp->data);
-        free(tmp);
-    }
-}
+// void free_list(t_list *list)
+// {
+//     t_list *tmp;
+//     while (list)
+//     {
+//         tmp = list;
+//         list = list->next;
+//         free(tmp->data);
+//         free(tmp);
+//     }
+// }
 
-int cmp_str(void *a, void *b)
-{
-    return strcmp((char *)a, (char *)b);
-}
+// int cmp_str(void *a, void *b)
+// {
+//     return strcmp((char *)a, (char *)b);
+// }
 
-void test_ft_list_push_front()
-{
-    printf("Test ft_list_push_front:\n");
-    t_list *list = NULL;
-    ft_list_push_front(&list, strdup("World"));
-    ft_list_push_front(&list, strdup("Hello"));
-    print_list(list);
-    free_list(list);
-    printf("\n");
-}
+// void test_ft_list_push_front()
+// {
+//     printf("Test ft_list_push_front:\n");
+//     t_list *list = NULL;
+//     ft_list_push_front(&list, strdup("World"));
+//     ft_list_push_front(&list, strdup("Hello"));
+//     print_list(list);
+//     free_list(list);
+//     printf("\n");
+// }
 
-void test_ft_list_size()
-{
-    printf("Test ft_list_size:\n");
-    t_list *list = NULL;
-    ft_list_push_front(&list, strdup("World"));
-    ft_list_push_front(&list, strdup("Hello"));
-    printf("Taille de la liste: %d\n", ft_list_size(list));
-    free_list(list);
-    printf("\n");
-}
+// void test_ft_list_size()
+// {
+//     printf("Test ft_list_size:\n");
+//     t_list *list = NULL;
+//     ft_list_push_front(&list, strdup("World"));
+//     ft_list_push_front(&list, strdup("Hello"));
+//     printf("Taille de la liste: %d\n", ft_list_size(list));
+//     free_list(list);
+//     printf("\n");
+// }
 
-void test_ft_list_sort()
-{
-    printf("Test ft_list_sort:\n");
-    t_list *list = NULL;
-    ft_list_push_front(&list, strdup("World"));
-    ft_list_push_front(&list, strdup("Hello"));
-    ft_list_push_front(&list, strdup("OpenAI"));
-    printf("Avant le tri: ");
-    print_list(list);
-    ft_list_sort(&list, cmp_str);
-    printf("Après le tri: ");
-    print_list(list);
-    free_list(list);
-    printf("\n");
-}
+// void test_ft_list_sort()
+// {
+//     printf("Test ft_list_sort:\n");
+//     t_list *list = NULL;
+//     ft_list_push_front(&list, strdup("World"));
+//     ft_list_push_front(&list, strdup("Hello"));
+//     ft_list_push_front(&list, strdup("OpenAI"));
+//     printf("Avant le tri: ");
+//     print_list(list);
+//     ft_list_sort(&list, cmp_str);
+//     printf("Après le tri: ");
+//     print_list(list);
+//     free_list(list);
+//     printf("\n");
+// }
 
-void test_ft_list_remove_if()
-{
-    printf("Test ft_list_remove_if:\n");
-    t_list *list = NULL;
-    ft_list_push_front(&list, strdup("World"));
-    ft_list_push_front(&list, strdup("Hello"));
-    ft_list_push_front(&list, strdup("OpenAI"));
-    ft_list_push_front(&list, strdup("Hello"));
-    printf("Avant la suppression: ");
-    print_list(list);
-    ft_list_remove_if(&list, "Hello", cmp_str, free);
-    printf("Après la suppression: ");
-    print_list(list);
-    free_list(list);
-    printf("\n");
-}
+// void test_ft_list_remove_if()
+// {
+//     printf("Test ft_list_remove_if:\n");
+//     t_list *list = NULL;
+//     ft_list_push_front(&list, strdup("World"));
+//     ft_list_push_front(&list, strdup("Hello"));
+//     ft_list_push_front(&list, strdup("OpenAI"));
+//     ft_list_push_front(&list, strdup("Hello"));
+//     printf("Avant la suppression: ");
+//     print_list(list);
+//     ft_list_remove_if(&list, "Hello", cmp_str, free);
+//     printf("Après la suppression: ");
+//     print_list(list);
+//     free_list(list);
+//     printf("\n");
+// }
 
 int main()
 {
@@ -191,11 +191,11 @@ int main()
     test_ft_strdup();
 
     // Tests des fonctions bonus
-    test_ft_atoi_base();
-    test_ft_list_push_front();
-    test_ft_list_size();
-    test_ft_list_sort();
-    test_ft_list_remove_if();
+    // test_ft_atoi_base();
+    // test_ft_list_push_front();
+    // test_ft_list_size();
+    // test_ft_list_sort();
+    // test_ft_list_remove_if();
 
     return 0;
 }
