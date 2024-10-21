@@ -19,53 +19,68 @@ char    *ft_strdup(const char *s);
 #define GRAY "\033[1;90m"
 #define LIGHT_RED "\033[1;91m"
 #define LIGHT_GREEN "\033[1;92m"
-#define LIGHT_YELLOW "\033[1;93m"
-#define LIGHT_BLUE "\033[1;94m"
-#define LIGHT_MAGENTA "\033[1;95m"
-#define LIGHT_CYAN "\033[1;96m"
-#define RED "\033[1;31m"
-#define GREEN "\033[1;32m"
 #define RESET "\033[0m"
 
+void print_section_header(const char *color, const char *title) {
+    printf("%s┌──────────────────────────────────────────────────────────────────────────┐\n", color);
+    printf("│ %-72s │\n", title);
+    printf("└──────────────────────────────────────────────────────────────────────────┘%s\n", RESET);
+}
+
+void print_test_header(const char *color, const char *title) {
+    printf("\n%s=== %s ===%s\n", color, title, RESET);
+}
+
 void test_ft_strlen() {
-    printf(BLUE "\n=== Test ft_strlen ===\n" RESET);
+    print_test_header(BLUE, "Test ft_strlen");
+    print_section_header(BLUE, "Testing string length");
     printf("ft_strlen(\"\"): %zu (expected: 0)\n", ft_strlen(""));
     printf("ft_strlen(\"Hello\"): %zu (expected: 5)\n", ft_strlen("Hello"));
     printf("ft_strlen(\"Hello, world!\"): %zu (expected: 13)\n", ft_strlen("Hello, world!"));
+    printf("ft_strlen(\"This is a longer string, just for testing purposes!\"): %zu (expected: 47)\n", ft_strlen("This is a longer string, just for testing purposes!"));
 }
 
 void test_ft_strcpy() {
     char dest[100];
-    printf("\n" YELLOW "=== Test ft_strcpy ===\n" RESET);
+    print_test_header(YELLOW, "Test ft_strcpy");
+    print_section_header(YELLOW, "Copying strings");
     printf("ft_strcpy(dest, \"Hello\"): %s (expected: Hello)\n", ft_strcpy(dest, "Hello"));
     printf("ft_strcpy(dest, \"World\"): %s (expected: World)\n", ft_strcpy(dest, "World"));
+    printf("ft_strcpy(dest, \"This is a longer test string.\"): %s (expected: This is a longer test string.)\n", ft_strcpy(dest, "This is a longer test string."));
+    printf("ft_strcpy(dest, \"\"): %s (expected: empty string)\n", ft_strcpy(dest, ""));
 }
 
 void test_ft_strcmp() {
-    printf("\n" MAGENTA "=== Test ft_strcmp ===\n" RESET);
+    print_test_header(MAGENTA, "Test ft_strcmp");
+    print_section_header(MAGENTA, "Comparing strings");
     printf("ft_strcmp(\"abc\", \"abc\"): %d (expected: 0)\n", ft_strcmp("abc", "abc"));
     printf("ft_strcmp(\"abc\", \"abd\"): %d (expected: negative)\n", ft_strcmp("abc", "abd"));
     printf("ft_strcmp(\"abd\", \"abc\"): %d (expected: positive)\n", ft_strcmp("abd", "abc"));
     printf("ft_strcmp(\"\", \"\"): %d (expected: 0)\n", ft_strcmp("", ""));
     printf("ft_strcmp(\"a\", \"\"): %d (expected: positive)\n", ft_strcmp("a", ""));
     printf("ft_strcmp(\"\", \"a\"): %d (expected: negative)\n", ft_strcmp("", "a"));
+    printf("ft_strcmp(\"long string with same start\", \"long string with different end!\"): %d (expected: negative)\n", ft_strcmp("long string with same start", "long string with different end!"));
 }
 
 void test_ft_write() {
-    printf("\n" CYAN "=== Test ft_write ===\n" RESET);
+    print_test_header(CYAN, "Test ft_write");
+    print_section_header(CYAN, "Writing to file descriptors");
     ssize_t ret;
 
     ret = ft_write(1, "Hello, world!\n", 14);
     printf("ft_write(1, \"Hello, world!\\n\", 14): %zd (expected: 14)\n", ret);
 
-    // Test avec un file descriptor invalide
-    ret = ft_write(-1, "Hello", 5);
+    ret = ft_write(1, "", 0);  // Write nothing
+    printf("ft_write(1, \"\", 0): %zd (expected: 0)\n", ret);
+
+    ret = ft_write(-1, "Hello", 5);  // Invalid file descriptor
     perror("ft_write avec fd invalide");
     printf("ft_write(-1, \"Hello\", 5): %zd (expected: -1)\n", ret);
 }
 
 void test_ft_read() {
-    printf("\n" GRAY "=== Test ft_read ===\n" RESET);
+    print_test_header(GRAY, "Test ft_read");
+    print_section_header(GRAY, "Reading from file descriptors");
     char buffer[100];
     ssize_t ret;
 
@@ -75,21 +90,18 @@ void test_ft_read() {
         return;
     }
 
-    // Écrire dans le fichier pour tester la lecture
     write(fd, "Hello, world!", 13);
-    lseek(fd, 0, SEEK_SET);  // Revenir au début du fichier
+    lseek(fd, 0, SEEK_SET);
 
-    // Lecture avec ft_read
     ret = ft_read(fd, buffer, 13);
     if (ret != -1) {
-        buffer[ret] = '\0';  // Ajout de la fin de chaîne
+        buffer[ret] = '\0';
         printf("ft_read(fd, buffer, 13): %zd, buffer: \"%s\" (expected: \"Hello, world!\")\n", ret, buffer);
     } else {
         perror("ft_read");
     }
 
-    // Test avec un file descriptor invalide
-    ret = ft_read(-1, buffer, 5);
+    ret = ft_read(-1, buffer, 5);  // Invalid file descriptor
     perror("ft_read avec fd invalide");
     printf("ft_read(-1, buffer, 5): %zd (expected: -1)\n", ret);
 
@@ -97,23 +109,26 @@ void test_ft_read() {
 }
 
 void test_ft_strdup() {
-    printf("\n" LIGHT_RED "=== Test ft_strdup ===\n" RESET);
+    print_test_header(LIGHT_RED, "Test ft_strdup");
+    print_section_header(LIGHT_RED, "Duplicating strings");
     char *dup;
 
     dup = ft_strdup("Hello");
     if (dup) {
         printf("ft_strdup(\"Hello\"): %s (expected: Hello)\n", dup);
         free(dup);
-    } else {
-        printf("ft_strdup(\"Hello\"): NULL (allocation error)\n");
     }
 
     dup = ft_strdup("");
     if (dup) {
         printf("ft_strdup(\"\"): \"%s\" (expected: empty string)\n", dup);
         free(dup);
-    } else {
-        printf("ft_strdup(\"\"): NULL (allocation error)\n");
+    }
+
+    dup = ft_strdup("A much longer string for strdup testing purposes, just to make sure it handles larger allocations.");
+    if (dup) {
+        printf("ft_strdup(\"A much longer string...\"): %s\n", dup);
+        free(dup);
     }
 }
 
